@@ -1,0 +1,19 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: support@ecommerce-cart.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is an ecommerce cart service API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Ecommerce Cart API
+  version: "1.0"
+paths: {}
+schemes:
+  - http
+  - https
+swagger: "2.0"

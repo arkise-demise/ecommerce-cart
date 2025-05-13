@@ -1,0 +1,322 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is an ecommerce cart service API.",
+    "title": "Ecommerce Cart API",
+    "version": "1.0",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.swagger.io/support",
+      "email": "support@ecommerce-cart.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/products/add_product": {
+      "post": {
+        "summary": "Add a new product",
+        "description": "Adds a new product to the store",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "product",
+            "description": "Product details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Products"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product added successfully",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/add_items": {
+      "post": {
+        "summary": "Add items to the cart",
+        "description": "Adds a specified quantity of a product to the cart",
+        "tags": ["Cart"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "item",
+            "description": "Item to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestForAddItem"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Items added successfully",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/remove/{itemID}": {
+      "delete": {
+        "summary": "Remove item from the cart",
+        "description": "Removes a specific item from the cart by item ID",
+        "tags": ["Cart"],
+        "parameters": [
+          {
+            "name": "itemID",
+            "in": "path",
+            "description": "Item ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item removed from cart",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid itemID",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "Item not found",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/remove": {
+      "delete": {
+        "summary": "Remove all items from the cart",
+        "description": "Clears all items from the cart",
+        "tags": ["Cart"],
+        "responses": {
+          "200": {
+            "description": "All items removed from the cart",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Failed to remove all items",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/update": {
+      "put": {
+        "summary": "Update item quantity in the cart",
+        "description": "Updates the quantity of a specific item in the cart",
+        "tags": ["Cart"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "updateRequest",
+            "description": "Update item quantity",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestForUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item quantity updated",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "Item not found",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/discount": {
+      "post": {
+        "summary": "Apply a discount to an item",
+        "description": "Applies a percentage or fixed discount to a cart item",
+        "tags": ["Cart"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "discountRequest",
+            "description": "Discount details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestForDiscount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Discount applied",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/view": {
+      "get": {
+        "summary": "View all items in the cart",
+        "description": "Retrieves all items currently in the cart and calculates the total price",
+        "tags": ["Cart"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Cart viewed successfully",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/cart/checkout": {
+      "post": {
+        "summary": "Checkout the cart",
+        "description": "Finalizes the cart and proceeds with the checkout process",
+        "tags": ["Cart"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Checkout successful",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Products": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "integer"
+        },
+        "product_name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "stock": {
+          "type": "integer"
+        }
+      }
+    },
+    "RequestForAddItem": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "RequestForUpdate": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "RequestForDiscount": {
+      "type": "object",
+      "properties": {
+        "discount_type": {
+          "type": "string"
+        },
+        "discount": {
+          "type": "number",
+          "format": "float"
+        },
+        "item_id": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
